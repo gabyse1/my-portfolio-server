@@ -1,0 +1,39 @@
+{
+  "name": "my-portfolio-server",
+  "version": "1.0.0",
+  "description": "Server to mange portfolio data dynamically",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon ./index.js --exec babel-node",
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "babel -d ./build ./index.js -s && babel -d ./build ./src -s",
+    "build": "npm run clean && npm run build-server",
+    "start": "cross-env NODE_ENV=production node ./build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1212.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.5",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.7.8",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.0",
+    "@babel/node": "^7.22.6",
+    "@babel/preset-env": "^7.22.9",
+    "babel-eslint": "^10.1.0",
+    "nodemon": "^2.0.19"
+  }
+}
