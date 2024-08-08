@@ -24,8 +24,10 @@ app.set('port', process.env.SERVER_PORT || 5000);
 app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors({ origin: `${process.env.FRONT_URL || 'http://localhost'}:${process.env.FRONT_PORT || 3000}` }));
-
+app.use(cors({ 
+  origin: [`${process.env.FRONT_URL}`,'http://localhost:3000'],
+  optionsSuccessStatus: 200,
+}));
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, './client/build')));
 
