@@ -4,6 +4,7 @@ import validateToolInput from '../validations/tool';
 import Tool from '../models/Tool';
 import Project from '../models/Project';
 import isAuth from '../helpers/isAuth';
+import { connectDB } from '../database';
 
 const toolRouter = Router();
 

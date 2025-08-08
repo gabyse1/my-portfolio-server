@@ -3,17 +3,25 @@ import mongoose from 'mongoose';
 
 if (process.env.NODE_ENV !== 'production') dotenv.config();
 
-(async () => {
-  try {
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
     mongoose.set('strictQuery', false);
-    const db = await mongoose.connect(process.env.MONGODB_URI, {
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
-    console.log('DB connected to', db.connection.name);
-  } catch (error) {
-    console.log('Can not connect to the database. ', error);
+    }).then((mongoose) => mongoose);
   }
-})();
+  
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
 
 // 'mongodb://localhost:27017/myPortfolioDB'

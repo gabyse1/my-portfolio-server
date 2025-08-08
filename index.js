@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
-import './src/database';
+import { dbMiddleware } from './src/middlewares/db-middleware';
 import secureurlRouter from './src/routes/secureurl.router';
 import userRouter from './src/routes/user.router';
 import toolRouter from './src/routes/tool.router';
@@ -28,6 +28,7 @@ app.use(cors({
   origin: [`${process.env.FRONT_URL}`,'http://localhost:3000'],
   optionsSuccessStatus: 200,
 }));
+app.use(dbMiddleware);
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, './client/build')));
 
