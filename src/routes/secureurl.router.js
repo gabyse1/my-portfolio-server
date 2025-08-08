@@ -1,12 +1,15 @@
 import { Router } from 'express';
-import generateUploadURL from '../helpers/s3';
+import generateUploadURL from '../helpers/supabaseStorageBucket';
 
 const secureurlRouter = Router();
 
 // routes
-secureurlRouter.get('/s3url/:fname', async (req, res) => {
-  const url = await generateUploadURL(req.params.fname);
-  return res.send({ url });
-});
+const wrap = fn => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
+secureurlRouter.post('/bucketurl', wrap(async (req, res) => {
+  const url = await generateUploadURL(req, res);
+  return url;
+}));
 
 export default secureurlRouter;

@@ -29,12 +29,17 @@ toolRouter.post(
   '/',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const { errors, isValid } = validateToolInput(req.body);
-    if (!isValid) return res.status(400).json({ message: errors });
+    try {
+      const { errors, isValid } = validateToolInput(req.body);
+      if (!isValid) return res.status(400).json({ message: errors });
 
-    const newTool = new Tool(req.body);
-    const createdTool = await newTool.save();
-    return res.json(createdTool);
+      const newTool = new Tool(req.body);
+      const createdTool = await newTool.save();
+      return res.json(createdTool);
+    } catch (err) {
+      console.error('Error saving tool:', err); // <-- logs error to console
+      return res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
   }),
 );
 

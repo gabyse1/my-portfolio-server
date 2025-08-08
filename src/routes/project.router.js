@@ -23,12 +23,17 @@ projectRouter.get('/:id',
 projectRouter.post('/',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const { errors, isValid } = validateProjectInput(req.body);
-    if (!isValid) return res.status(400).json({ message: errors });
+    try {
+      const { errors, isValid } = validateProjectInput(req.body);
+      if (!isValid) return res.status(400).json({ message: errors });
 
-    const newProject = new Project(req.body);
-    const createdProject = await newProject.save();
-    return res.json(createdProject);
+      const newProject = new Project(req.body);
+      const createdProject = await newProject.save();
+      return res.json(createdProject);
+    } catch (err) {
+      console.error('Error saving project:', err); // <-- logs error to console
+      return res.status(500).json({ message: 'Internal server error', error: err.message });
+    }
   }));
 
 projectRouter.post('/edit/:id',

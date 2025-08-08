@@ -32,7 +32,7 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, './client/build')));
 
 // routes
-app.use('/api/s3', secureurlRouter);
+app.use('/api/bucket', secureurlRouter);
 app.use('/api/tools', toolRouter);
 app.use('/api/projects', projectRouter);
 app.use('/api/users', userRouter);
@@ -45,7 +45,7 @@ app.get('*', (req, res) => {
 });
 
 // error handler
-app.use((error, req, res) => {
+app.use((error, req, res, next) => {
   const { code, keyValue } = error;
   if (code === 11000) {
     const customError = new Error(`This ${Object.keys(keyValue)[0]} is already in use`);
